@@ -1,1 +1,9 @@
-<Solution />
+<Solution>
+  <Folder Name="/Agents/">
+    <Project Path="Agent1/Agent1.csproj" />
+  </Folder>
+  <Folder Name="/TTS/">
+    <Project Path="Random1/Random1.csproj" />
+  </Folder>
+  <Project Path="Framework/Framework.csproj" />
+</Solution>
