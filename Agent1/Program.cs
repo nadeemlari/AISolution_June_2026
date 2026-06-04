@@ -6,11 +6,10 @@ using OpenAI.Chat;
 using Spectre.Console;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
-//---------------------------------------------------------------------
+
 // ReSharper disable ClassNeverInstantiated.Global
 #pragma warning disable OPENAI001
 
-//---------------------------------------------------------------
 
 using var timer = new CodeTimer("Agent1");
 Env.TraversePath().Load();
@@ -43,6 +42,9 @@ var chatMessage = new ChatMessage(ChatRole.User,
 //     }
 // });
 
+InMemoryChatHistoryProvider chatHistoryProvider = new();
+
+var session = await aiAgent.CreateSessionAsync();
 
 var response = await aiAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage);
 // var response = await aiAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage,options: option);

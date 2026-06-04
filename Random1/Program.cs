@@ -9,6 +9,6 @@ Env.TraversePath().Load();
 var audioClient = AI.OpenRouter.GetAudioClient("google/lyria-3-pro-preview");
 // await audioClient.CreateVoiceAsync(new BinaryCo)
 
-OpenAIClient client = new OpenAIClient()
+// OpenAIClient client = new OpenAIClient()
 
 // Console.WriteLine(Env.GetString("MODEL"));
