@@ -29,7 +29,6 @@ var aiAgent = AI.OpenRouter.GetChatClient()
             }
         }
     );
-
 await Measure.TimeAsync(async () =>
 {
     var chatMessage = new ChatMessage(ChatRole.User,
@@ -46,9 +45,6 @@ await Measure.TimeAsync(async () =>
     AnsiConsole.WriteLine();
     if (response.Usage != null) PrintUsage(response.Usage);
 });
-
-
-
 return;
 
 void PrintUsage(UsageDetails usage)
