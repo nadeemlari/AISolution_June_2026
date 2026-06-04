@@ -2,6 +2,7 @@
 using Framework;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using Spectre.Console;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
@@ -29,12 +30,26 @@ var aiAgent = AI.OpenRouter.GetChatClient()
             }
         }
     );
+
+
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddConsole()
+        .AddFilter("*", LogLevel.Debug);
+});
+
+// AIContextProvider
+
+var theAgent = aiAgent.AsBuilder()
+    .UseLogging(loggerFactory).Build();
+
+
 await Measure.TimeAsync(async () =>
 {
     var chatMessage = new ChatMessage(ChatRole.User,
-        "what are the most populated cities in the world? Respond only with NAME and TOTAL POPULATION");
+        "what are the most populated cities in the world? Respond only with NAME and TOTAL POPULATION in JSON format");
 
-    var response = await aiAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage);
+    var response = await theAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage);
 
     foreach (var city in response.Result)
     {
