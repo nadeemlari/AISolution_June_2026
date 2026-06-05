@@ -2,7 +2,6 @@
 using Framework;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using Spectre.Console;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
@@ -10,8 +9,6 @@ using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 // ReSharper disable ClassNeverInstantiated.Global
 #pragma warning disable OPENAI001
 
-
-// using var timer = new CodeTimer("Agent1");
 Env.TraversePath().Load();
 
 var aiAgent = AI.OpenRouter.GetChatClient()
@@ -32,28 +29,28 @@ var aiAgent = AI.OpenRouter.GetChatClient()
     );
 
 
-var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder.AddConsole()
-        .AddFilter("*", LogLevel.Debug);
-});
+// var loggerFactory = LoggerFactory.Create(builder =>
+// {
+//     builder.AddConsole()
+//         .AddFilter("*", LogLevel.Debug);
+// });
 
 // AIContextProvider
 
-var theAgent = aiAgent.AsBuilder()
-    .UseLogging(loggerFactory).Build();
+// var theAgent = aiAgent.AsBuilder()
+//     .UseLogging(loggerFactory).Build();
 
 
 await Measure.TimeAsync(async () =>
 {
     var chatMessage = new ChatMessage(ChatRole.User,
-        "what are the most populated cities in the world? Respond only with NAME and TOTAL POPULATION in JSON format");
+        "what are the top 100 most populated cities in the world? Respond only with NAME and TOTAL POPULATION in JSON format");
 
-    var response = await theAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage);
+    var response = await aiAgent.RunAsync<IEnumerable<LargestCity>>(chatMessage);
 
     foreach (var city in response.Result)
     {
-        AnsiConsole.MarkupLine($"[green][bold]{city.Name}[/]-[bold]{city.Population}[/].[/]");
+        AnsiConsole.MarkupLine($"[green][bold]{city.Name.EscapeMarkup()}[/]-[bold]{city.Population}[/].[/]");
     }
 
     AnsiConsole.WriteLine();
